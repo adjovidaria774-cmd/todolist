@@ -3,23 +3,17 @@
 import { useState, useRef } from "react";
 
 // Les 5 colonnes du tableau, dans l'ordre (elles sont fixes)
-// Chaque colonne a ses couleurs pastel : fond, bandeau, pastille, bord des cartes
+// Design neutre : seule la petite pastille (dot) est colorée
 const COLUMNS = [
-  { id: "todo", label: "Todo", dot: "bg-[#8FA2E8]", head: "bg-[#DCE3F8]", edge: "border-l-[#8FA2E8]" },
-  { id: "pending", label: "Pending", dot: "bg-[#F4B26B]", head: "bg-[#FFE3C7]", edge: "border-l-[#F4B26B]" },
-  { id: "review", label: "In review", dot: "bg-[#7CC4EC]", head: "bg-[#CDEAF8]", edge: "border-l-[#7CC4EC]" },
-  { id: "done", label: "Done", dot: "bg-[#7FD3A0]", head: "bg-[#D0EEDA]", edge: "border-l-[#7FD3A0]" },
-  { id: "archived", label: "Archived", dot: "bg-[#B9A8D2]", head: "bg-[#E5DEEE]", edge: "border-l-[#B9A8D2]" },
+  { id: "todo", label: "Todo", dot: "bg-[#6B7280]" },
+  { id: "pending", label: "Pending", dot: "bg-[#EA580C]" },
+  { id: "review", label: "In review", dot: "bg-[#2563EB]" },
+  { id: "done", label: "Done", dot: "bg-[#16A34A]" },
+  { id: "archived", label: "Archived", dot: "bg-[#9CA3AF]" },
 ];
 
-// Couleur de chaque étiquette
-const TAG_COLORS = {
-  Design: "bg-[#EADDFB] text-[#5E3A94]",
-  Backend: "bg-[#D9E6FB] text-[#2F508F]",
-  Frontend: "bg-[#FBDDE8] text-[#93335A]",
-  DevOps: "bg-[#D6F1E0] text-[#2A6A44]",
-  Général: "bg-[#F3EBDD] text-[#7A6232]",
-};
+// Toutes les étiquettes sont grises
+const TAG_STYLE = "bg-[#F3F4F6] text-[#4B5563]";
 
 const INITIAL_TASKS = [
   { id: 1, title: "Maquetter la page d'accueil", tag: "Design", status: "todo" },
@@ -161,25 +155,25 @@ export default function Page() {
 
   // Bouton d'action d'une carte (flèches, crayon, corbeille)
   const actionBtn =
-    "rounded-lg p-1 text-[#6B6580] transition hover:bg-[#F1EBFB] hover:text-[#2D2A3E] disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent";
+    "rounded-lg p-1 text-[#4B5563] transition hover:bg-[#F3F4F6] hover:text-[#111827] disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent";
 
   return (
-    <div className="min-h-screen bg-[#FBF9FE] text-[#2D2A3E]">
+    <div className="min-h-screen bg-[#F8F9FB] text-[#111827]">
       {/* ---------- En-tête ---------- */}
-      <header className="flex items-center justify-between border-b border-[#ECE6F5] bg-white/70 px-6 py-3 backdrop-blur">
+      <header className="flex items-center justify-between border-b border-[#E5E7EB] bg-white px-6 py-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#CDBDF2] text-sm font-bold text-[#3F2E73]">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#0F172A] text-sm font-bold text-white">
             T
           </div>
           <span className="font-semibold">Tableau</span>
-          <span className="text-[#B5AEC8]">/</span>
-          <span className="text-sm text-[#6B6580]">Mes tâches</span>
+          <span className="text-[#D1D5DB]">/</span>
+          <span className="text-sm text-[#6B7280]">Mes tâches</span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="rounded-full bg-[#F1EBFB] px-3 py-1 text-xs text-[#5B4A78]">
+          <span className="rounded-full border border-[#E5E7EB] bg-white px-3 py-1 text-xs text-[#6B7280]">
             {tasks.length} tâche{tasks.length > 1 ? "s" : ""}
           </span>
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#FBDDE8] text-xs font-medium text-[#93335A]">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E5E7EB] text-xs font-medium text-[#4B5563]">
             ID
           </div>
         </div>
@@ -188,8 +182,8 @@ export default function Page() {
       <main className="p-6">
         {/* ---------- Recherche + nouvelle tâche ---------- */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="relative w-full sm:w-96">
-            <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#9A93B0]">
+          <div className="relative w-full sm:w-[28rem]">
+            <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#6B7280]">
               <SearchIcon />
             </span>
             <input
@@ -197,23 +191,23 @@ export default function Page() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Rechercher..."
-              className="w-full rounded-xl border border-[#E6DFF2] bg-white py-2.5 pl-9 pr-3 text-sm outline-none placeholder:text-[#A9A2BC] focus:border-[#B9A8D2] focus:ring-4 focus:ring-[#EADDFB]"
+              className="w-full rounded-xl border border-[#E5E7EB] bg-white py-3 pl-10 pr-3 text-sm outline-none placeholder:text-[#9CA3AF] focus:border-[#94A3B8] focus:ring-4 focus:ring-[#E2E8F0]"
             />
           </div>
 
-          <div className="flex w-full gap-2 sm:w-auto">
+          <div className="flex w-full gap-3 sm:w-auto">
             <input
               type="text"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && addTask()}
               placeholder="Nouvelle tâche..."
-              className="w-full rounded-xl border border-[#E6DFF2] bg-white px-3 py-2.5 text-sm outline-none placeholder:text-[#A9A2BC] focus:border-[#B9A8D2] focus:ring-4 focus:ring-[#EADDFB] sm:w-96"
+              className="w-full rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 text-sm outline-none placeholder:text-[#9CA3AF] focus:border-[#94A3B8] focus:ring-4 focus:ring-[#E2E8F0] sm:w-[28rem]"
             />
             <button
               onClick={addTask}
               disabled={!newTitle.trim()}
-              className="flex items-center gap-1.5 whitespace-nowrap rounded-xl bg-[#CDBDF2] px-4 py-2.5 text-sm font-medium text-[#3F2E73] transition hover:bg-[#BFAAEE] disabled:cursor-not-allowed disabled:bg-[#EEE9F6] disabled:text-[#A9A2BC]"
+              className="flex items-center gap-1.5 whitespace-nowrap rounded-xl bg-[#64748B] px-5 py-3 text-sm font-medium text-white transition hover:bg-[#475569] disabled:cursor-not-allowed disabled:bg-[#94A3B8]"
             >
               <PlusIcon /> Ajouter
             </button>
@@ -221,15 +215,15 @@ export default function Page() {
         </div>
 
         {/* ---------- Résumé par statut ---------- */}
-        <div className="mt-5 flex flex-wrap gap-1.5 rounded-2xl border border-[#ECE6F5] bg-white/60 p-1.5">
+        <div className="mt-5 flex flex-wrap gap-1.5 rounded-2xl border border-[#E5E7EB] bg-[#F3F4F6] p-1.5">
           {COLUMNS.map((col) => (
             <div
               key={col.id}
-              className={`flex min-w-[8rem] flex-1 items-center justify-center gap-2 rounded-xl py-1.5 text-sm text-[#2D2A3E] ${col.head}`}
+              className="flex min-w-[8rem] flex-1 items-center justify-center gap-2 rounded-xl bg-white py-2 text-sm text-[#374151] shadow-sm"
             >
               <span className={`h-2 w-2 rounded-full ${col.dot}`} />
               {col.label}
-              <span className="text-[#6B6580]">
+              <span className="text-[#9CA3AF]">
                 {visibleTasks.filter((t) => t.status === col.id).length}
               </span>
             </div>
@@ -237,7 +231,7 @@ export default function Page() {
         </div>
 
         {/* ---------- Colonnes (défilent de gauche à droite) ---------- */}
-        <div className="mt-5 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4">
+        <div className="mt-5 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4">
           {COLUMNS.map((col, colIndex) => {
             const columnTasks = visibleTasks.filter((t) => t.status === col.id);
             const isOver = overColumn === col.id;
@@ -253,21 +247,21 @@ export default function Page() {
                   if (!e.currentTarget.contains(e.relatedTarget)) setOverColumn(null);
                 }}
                 onDrop={() => handleDrop(col.id)}
-                className={`flex h-[calc(100vh-19rem)] min-h-[28rem] w-[85vw] shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-[#E6DFF2] bg-white transition sm:w-80 ${
-                  isOver ? "ring-4 ring-[#CDBDF2]" : ""
+                className={`flex h-[calc(100vh-19rem)] min-h-[28rem] w-[85vw] shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-[#E5E7EB] bg-[#F3F4F6] transition sm:w-[25rem] ${
+                  isOver ? "ring-4 ring-[#CBD5E1]" : ""
                 }`}
               >
-                <div className={`flex items-center justify-between px-4 py-3 ${col.head}`}>
+                <div className="flex items-center justify-between border-b border-[#E5E7EB] px-5 py-4">
                   <div className="flex items-center gap-2 text-sm font-semibold">
                     <span className={`h-2.5 w-2.5 rounded-full ${col.dot}`} />
                     {col.label}
                   </div>
-                  <span className="rounded-full bg-white/80 px-2 py-0.5 text-xs text-[#6B6580]">
+                  <span className="rounded-full border border-[#E5E7EB] bg-white px-2 py-0.5 text-xs text-[#6B7280]">
                     {columnTasks.length}
                   </span>
                 </div>
 
-                <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto p-3">
+                <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto p-4">
                   {columnTasks.map((task) => (
                     <article
                       key={task.id}
@@ -277,7 +271,7 @@ export default function Page() {
                         setDraggedId(null);
                         setOverColumn(null);
                       }}
-                      className={`cursor-grab rounded-xl border border-l-4 border-[#ECE6F5] bg-white p-3 shadow-[0_2px_8px_rgba(120,100,170,0.08)] transition hover:shadow-[0_4px_14px_rgba(120,100,170,0.16)] active:cursor-grabbing ${col.edge} ${
+                      className={`cursor-grab rounded-xl border border-[#E5E7EB] bg-white p-4 shadow-[0_1px_3px_rgba(0,0,0,0.08)] transition hover:shadow-[0_4px_12px_rgba(0,0,0,0.10)] active:cursor-grabbing ${
                         draggedId === task.id ? "opacity-40" : ""
                       }`}
                     >
@@ -291,22 +285,18 @@ export default function Page() {
                             if (e.key === "Enter") saveEdit();
                             if (e.key === "Escape") cancelEdit();
                           }}
-                          className="w-full rounded-lg border border-[#B9A8D2] bg-[#FBF9FE] px-2 py-1 text-sm font-medium outline-none focus:ring-4 focus:ring-[#EADDFB]"
+                          className="w-full rounded-lg border border-[#94A3B8] bg-[#F8F9FB] px-2 py-1 text-sm outline-none focus:ring-4 focus:ring-[#E2E8F0]"
                         />
                       ) : (
                         <p
                           onDoubleClick={() => startEdit(task)}
-                          className="text-sm font-medium leading-snug"
+                          className="text-sm leading-snug"
                         >
                           {task.title}
                         </p>
                       )}
                       <div className="mt-3 flex items-center justify-between">
-                        <span
-                          className={`rounded-md px-2 py-0.5 text-xs font-medium ${
-                            TAG_COLORS[task.tag] || TAG_COLORS["Général"]
-                          }`}
-                        >
+                        <span className={`rounded-md px-2 py-0.5 text-xs ${TAG_STYLE}`}>
                           {task.tag}
                         </span>
                         <div className="flex items-center gap-1">
@@ -336,7 +326,7 @@ export default function Page() {
                           <button
                             onClick={() => setTaskToDelete(task)}
                             aria-label="Supprimer la tâche"
-                            className={`${actionBtn} hover:!bg-[#FDE4EB] hover:!text-[#B0305A]`}
+                            className={`${actionBtn} hover:!bg-[#FEE2E2] hover:!text-[#B91C1C]`}
                           >
                             <TrashIcon />
                           </button>
@@ -346,7 +336,7 @@ export default function Page() {
                   ))}
 
                   {columnTasks.length === 0 && (
-                    <p className="mt-2 text-center text-xs text-[#9A93B0]">
+                    <p className="mt-2 text-center text-xs text-[#9CA3AF]">
                       Glisse une tâche ici
                     </p>
                   )}
@@ -360,7 +350,7 @@ export default function Page() {
       {/* ---------- Fenêtre de confirmation de suppression ---------- */}
       {taskToDelete && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[#2D2A3E]/30 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#111827]/30 p-4"
           onClick={() => setTaskToDelete(null)}
         >
           <div
@@ -370,19 +360,19 @@ export default function Page() {
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-base font-semibold">Supprimer cette tâche ?</h2>
-            <p className="mt-2 text-sm text-[#6B6580]">
+            <p className="mt-2 text-sm text-[#6B7280]">
               « {taskToDelete.title} » sera supprimée définitivement.
             </p>
             <div className="mt-5 flex justify-end gap-2">
               <button
                 onClick={() => setTaskToDelete(null)}
-                className="rounded-xl bg-[#F1EBFB] px-4 py-2 text-sm text-[#5B4A78] hover:bg-[#E7DEF6]"
+                className="rounded-xl bg-[#F3F4F6] px-4 py-2 text-sm text-[#374151] hover:bg-[#E5E7EB]"
               >
                 Annuler
               </button>
               <button
                 onClick={confirmDelete}
-                className="rounded-xl bg-[#F7B8C8] px-4 py-2 text-sm font-medium text-[#7A1F42] hover:bg-[#F3A3B8]"
+                className="rounded-xl bg-[#DC2626] px-4 py-2 text-sm font-medium text-white hover:bg-[#B91C1C]"
               >
                 Supprimer
               </button>
