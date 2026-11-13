@@ -69,12 +69,6 @@ const TrashIcon = () => (
     <path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v5M14 11v5" />
   </Icon>
 );
-const PencilIcon = () => (
-  <Icon>
-    <path d="M12 20h9" />
-    <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
-  </Icon>
-);
 
 export default function Page() {
   const [tasks, setTasks] = useState(INITIAL_TASKS);
@@ -315,13 +309,6 @@ export default function Page() {
                             className={actionBtn}
                           >
                             <RightIcon />
-                          </button>
-                          <button
-                            onClick={() => startEdit(task)}
-                            aria-label="Modifier le nom de la tâche"
-                            className={actionBtn}
-                          >
-                            <PencilIcon />
                           </button>
                           <button
                             onClick={() => setTaskToDelete(task)}
