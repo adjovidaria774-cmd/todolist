@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { chargerTaches, sauvegarderTaches } from "@/lib/db";
 
 // Les 5 colonnes du tableau, dans l'ordre (elles sont fixes)
 // Design neutre : seule la petite pastille (dot) est colorée
@@ -71,7 +72,30 @@ const TrashIcon = () => (
 );
 
 export default function Page() {
-  const [tasks, setTasks] = useState(INITIAL_TASKS);
+  const [tasks, setTasks] = useState([]);
+  // loaded = true quand la lecture de la base est terminée
+  const [loaded, setLoaded] = useState(false);
+
+  // Au démarrage : on lit les tâches enregistrées dans IndexedDB.
+  // S'il n'y en a pas (première visite), on prend les tâches de départ.
+  useEffect(() => {
+    chargerTaches()
+      .then((saved) => {
+        setTasks(saved ?? INITIAL_TASKS);
+        setLoaded(true);
+      })
+      .catch(() => {
+        setTasks(INITIAL_TASKS);
+        setLoaded(true);
+      });
+  }, []);
+
+  // À chaque changement de la liste : on l'enregistre
+  // (pas avant la fin du chargement, pour ne pas écraser les données)
+  useEffect(() => {
+    if (!loaded) return;
+    sauvegarderTaches(tasks).catch(() => {});
+  }, [tasks, loaded]);
   const [search, setSearch] = useState("");
   const [newTitle, setNewTitle] = useState("");
 
@@ -141,6 +165,9 @@ export default function Page() {
     setDraggedId(null);
     setOverColumn(null);
   }
+
+  // Pendant la lecture de la base, on n'affiche pas encore le tableau
+  if (!loaded) return <div className="min-h-screen bg-[#F8F9FB]" />;
 
   // Recherche : on filtre par titre
   const visibleTasks = tasks.filter((t) =>
@@ -348,7 +375,7 @@ export default function Page() {
           >
             <h2 className="text-base font-semibold">Supprimer cette tâche ?</h2>
             <p className="mt-2 text-sm text-[#6B7280]">
-              « {taskToDelete.title} » sera supprimée définitivement.
+              Etes-vous sûre de vouloir supprimé?
             </p>
             <div className="mt-5 flex justify-end gap-2">
               <button
